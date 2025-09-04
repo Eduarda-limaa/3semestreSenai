@@ -1,0 +1,27 @@
+@use './variaveis.scss' as *;
+
+.barra{
+    width: 100%;
+    height: 50px;
+    color: $link-color;
+    background-color: $cor-destaque;
+    padding: 20px;
+
+    ul{
+        font-size: $font-size;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-right: 20px;
+    }
+
+    li{
+        list-style: none;
+    }
+
+    a{
+        color: white;
+        text-decoration: none;
+    }
+}
