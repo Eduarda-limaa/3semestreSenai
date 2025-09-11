@@ -12,7 +12,7 @@ class Usuario(models.Model):
 class Tarefa(models.Model):
     usuario= models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="usuario")
     descricao= models.TextField()
-    setor= models.CharField(max_length=12)
+    setor= models.CharField(max_length=50)
     PRIORIDADE= [
         ('baixa', 'Baixa'),
         ('média', 'Média'),
