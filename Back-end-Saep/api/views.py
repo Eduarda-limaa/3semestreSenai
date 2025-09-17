@@ -6,6 +6,10 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIV
 class ListCreateUsuario(ListCreateAPIView):
     serializer_class= UsuarioSerializer
     queryset= Usuario.objects.all()
+
+class RetrieveUpdateDestroyUsuario(RetrieveUpdateDestroyAPIView):
+    serializer_class= UsuarioSerializer
+    queryset= Usuario.objects.all()
     
 class ListCreateTarefa(ListCreateAPIView):
     serializer_class= TarefaSerializer

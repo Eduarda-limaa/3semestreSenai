@@ -8,7 +8,9 @@ class UsuarioSerializer(serializers.ModelSerializer):
         fields= '__all__'
         
 class TarefaSerializer(serializers.ModelSerializer):
+    # Recebe ID do usuário
+    usuario = serializers.PrimaryKeyRelatedField(queryset=Usuario.objects.all())
+
     class Meta:
-        model= Tarefa
-        fields= '__all__'
-        
+        model = Tarefa
+        fields = '__all__'

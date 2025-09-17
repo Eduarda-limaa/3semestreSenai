@@ -6,11 +6,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 const schemaCadUsuario= z.object({
     nome: z.string()
-        .min(9, 'Informe um nome válido!')
-        .max(20, 'Informe no máximo 20 caracteres') // pode ter que mudar daqui e do backend
-        .regex(/[aeiouAEIOU]/, { message: "O nome deve conter ao menos uma vogal" })
+        .min(5, "Informe um nome válido!")
+        .max(60, "Informe no máximo 60 caracteres")
+        .regex(/(?=.*[aeiouAEIOU])/, { message: "O nome deve conter ao menos uma vogal" })
         .regex(/^(?!.*(.)\1{3,}).*$/, { message: "Não repita tantas vezes a mesma letra" })
-        .regex(/^[A-Za-zÀ-ú]+(?:\s+[A-Za-zÀ-ú]+)+$/, {message: "Digite nome e sobrenome válidos"}),
+        .regex(/^([A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?)(\s[A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?){1,5}$/,{ message: "Digite um nome válido: de 2 a 6 palavras, cada uma começando com maiúscula, apenas letras, apóstrofo ou hífen" }),
     email: z.string()
         .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,{message: "Email inválido"})
 });
