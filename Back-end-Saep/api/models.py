@@ -10,18 +10,15 @@ class Usuario(models.Model):
 
 class Tarefa(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="tarefas")
-    descricao = models.TextField()  # aceita textos longos do front
-    setor = models.CharField(max_length=60)  # aceita letras, números, espaços e hífens
-    
+    descricao = models.TextField()  
+    setor = models.CharField(max_length=60) 
     PRIORIDADE = [
         ('Baixa', 'Baixa'),
         ('Média', 'Média'),
         ('Alta', 'Alta')
     ]
     prioridade = models.CharField(max_length=6, choices=PRIORIDADE)
-    
-    data_cadastro = models.DateTimeField(default=timezone.now)  # datetime completo
-    
+    data_cadastro = models.DateTimeField(default=timezone.now) 
     STATUS = [
         ('a fazer', 'A fazer'),
         ('fazendo', 'Fazendo'),

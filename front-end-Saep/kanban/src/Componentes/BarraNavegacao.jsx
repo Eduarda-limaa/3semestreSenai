@@ -7,7 +7,7 @@ export function BarraNavegacao(){
             <ul>
                 <li><Link to= '/CadUsuario'>Cadastro de Usuário</Link></li>
                 <li><Link to= '/CadTarefa'>Cadastro de Tarefa</Link></li>
-                <li><Link to= '/'>Gerenciamento de Tarefas</Link></li>
+                <li><Link to= '/Quadro'>Gerenciamento de Tarefas</Link></li>
             </ul>
         </nav>
     )

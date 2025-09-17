@@ -8,8 +8,6 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 40px;
-    
-
 
     .titulo{
         color: $cor-destaque;
@@ -21,11 +19,14 @@
         font-weight: bold;
         border: 1px solid $cor-destaque;
         border-radius: 7px;
-        padding: 9px;
+        padding: 10px;
     }
     button{
         padding: 10px;
         background-color: $cor-destaque;
         color: $link-color;
+    }
+    select{
+        padding: 5px;
     }
 }

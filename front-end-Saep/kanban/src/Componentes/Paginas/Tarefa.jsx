@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const schemaCadTarefa = z.object({
   descricao: z
     .string()
-    .min(40, 'A descrição precisa ter pelo menos 40 caracteres!')
+    .min(20, 'A descrição precisa ter pelo menos 20 caracteres!')
     .max(300, 'A descrição não pode ultrapassar 300 caracteres!')
     .regex(/^(?=.*[a-zA-ZÀ-ú])[a-zA-ZÀ-ú0-9\s.,\-()]+$/, 
       { message: 'A descrição deve conter letras válidas e não apenas números ou símbolos' })
