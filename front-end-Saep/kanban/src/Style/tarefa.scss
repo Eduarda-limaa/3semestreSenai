@@ -1,0 +1,65 @@
+@use './variaveis.scss' as *;
+
+.card {
+  background-color: $background;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  .descricao {
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .setor,
+  .usuario {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: darken($font-color, 25%);
+  }
+
+  .prioridade {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+    color: $link-color;
+  }
+
+  .acoes {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    button {
+      background-color: $cor-destaque;
+      color: $link-color;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: darken($cor-destaque, 8%);
+      }
+    }
+
+    select {
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+  }
+}

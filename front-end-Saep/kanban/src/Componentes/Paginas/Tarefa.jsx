@@ -1,105 +1,98 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from "react";
+import { useDraggable } from "@dnd-kit/core";
+import axios from "axios";
 
-// Schema de validação robusto
-const schemaCadTarefa = z.object({
-  descricao: z
-    .string()
-    .min(20, 'A descrição precisa ter pelo menos 20 caracteres!')
-    .max(300, 'A descrição não pode ultrapassar 300 caracteres!')
-    .regex(/^(?=.*[a-zA-ZÀ-ú])[a-zA-ZÀ-ú0-9\s.,\-()]+$/, 
-      { message: 'A descrição deve conter letras válidas e não apenas números ou símbolos' })
-    .regex(/^(?!.*(.)\1{4,}).*$/, 
-      { message: 'Não repita tantos caracteres consecutivos' }),
-  setor: z
-    .string()
-    .min(3, 'O setor precisa ter pelo menos 3 caracteres!')
-    .max(60, 'O setor não pode ultrapassar 60 caracteres!')
-    .regex(/^(?=.*[a-zA-Z0-9])[A-ZÀ-ú0-9\s\-]+$/i, 
-      { message: 'O setor deve conter letras, números, espaços ou hífens' })
-    .regex(/^(?!.*(.)\1{4,}).*$/, 
-      { message: 'Não repita tantos caracteres consecutivos' }),
-  usuario: z
-    .string()
-    .min(1, 'Selecione um usuário!'),
-  prioridade: z
-    .string()
-    .min(1, 'Selecione uma prioridade!')
-});
-
-export function CadTarefa() {
-  const [usuarios, setUsuarios] = useState([]);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: zodResolver(schemaCadTarefa)
-  });
+export default function Tarefa({ tarefa }) {
+  const [usuarios, setUsuarios] = useState({}); // mapa id → nome
 
   useEffect(() => {
-    async function fetchUsuarios() {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/api/usuario/');
-        setUsuarios(response.data);
-      } catch (error) {
-        console.error('Erro ao carregar usuários', error);
-        alert('Erro ao carregar usuários do sistema');
-      }
-    }
-    fetchUsuarios();
+    axios
+      .get("http://localhost:8000/api/usuario/")
+      .then((res) => {
+        const mapUsuarios = {};
+        res.data.forEach((u) => {
+          mapUsuarios[u.id] = u.nome;
+        });
+        setUsuarios(mapUsuarios);
+      })
+      .catch((err) => console.error("Erro ao carregar usuários", err));
   }, []);
 
-  async function obterDados(data) {
-    if (!data.usuario || !data.prioridade) {
-      alert('Por favor, selecione usuário e prioridade!');
-      return;
-    }
+  // drag and drop
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: tarefa.id,
+  });
 
-    try {
-      await axios.post('http://127.0.0.1:8000/api/tarefa/', data);
-      alert('Tarefa cadastrada com sucesso!');
-      reset();
-    } catch (error) {
-      console.error('Erro ao cadastrar tarefa', error);
-      if (error.response && error.response.data) {
-        alert('Erro ao cadastrar tarefa: ' + JSON.stringify(error.response.data));
-      } else {
-        alert('Erro ao cadastrar tarefa');
-      }
-    }
-  }
+  const style = transform
+    ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
+    : undefined;
+
+  // altera status da tarefa
+  const alterarStatus = (novoStatus) => {
+    axios
+      .patch(`http://localhost:8000/api/tarefa/${tarefa.id}`, { status: novoStatus })
+      .then(() => {
+        tarefa.status = novoStatus;
+      })
+      .catch((err) => console.error("Erro ao alterar status", err));
+  };
+
+  // editar descrição via prompt
+  const editarTarefa = () => {
+    const novaDescricao = prompt("Editar descrição:", tarefa.descricao);
+    if (!novaDescricao) return;
+
+    axios
+      .patch(`http://localhost:8000/api/tarefa/${tarefa.id}`, { descricao: novaDescricao })
+      .then(() => {
+        tarefa.descricao = novaDescricao;
+      })
+      .catch((err) => console.error("Erro ao editar tarefa", err));
+  };
+
+  // excluir tarefa
+  const excluirTarefa = () => {
+    if (!confirm("Deseja realmente excluir esta tarefa?")) return;
+
+    axios
+      .delete(`http://localhost:8000/api/tarefa/${tarefa.id}`)
+      .then(() => {
+        alert("Tarefa excluída com sucesso");
+      })
+      .catch((err) => console.error("Erro ao excluir tarefa", err));
+  };
 
   return (
-    <form className="formulario" onSubmit={handleSubmit(obterDados)}>
-      <h1 className="titulo">Cadastro de Tarefas</h1>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={`card prioridade-${tarefa.prioridade.toLowerCase()}`}
+    >
+      <p className="descricao">
+        <strong>Descrição:</strong> {tarefa.descricao}
+      </p>
+      <p className="setor">
+        <strong>Setor:</strong> {tarefa.setor}
+      </p>
+      <p className="usuario">
+        <strong>Vinculado a:</strong> {usuarios[tarefa.usuario] ?? "—"}
+      </p>
+      <span className="prioridade">{tarefa.prioridade}</span>
 
-      <label>Descrição:</label>
-      <input type="text" {...register('descricao')} />
-      {errors.descricao && <p className="erro">{errors.descricao.message}</p>}
-
-      <label>Setor:</label>
-      <input type="text" {...register('setor')} />
-      {errors.setor && <p className="erro">{errors.setor.message}</p>}
-
-      <label>Usuário:</label>
-      <select {...register('usuario')}>
-        <option value="">Selecione o Usuário</option>
-        {usuarios.map(u => (
-          <option key={u.id} value={u.id}>{u.nome}</option> // envia ID
-        ))}
-      </select>
-      {errors.usuario && <p className="erro">{errors.usuario.message}</p>}
-
-      <label>Prioridade:</label>
-      <select {...register('prioridade')}>
-        <option value="">Selecione a Prioridade</option>
-        <option value="Alta">Alta</option>
-        <option value="Média">Média</option>
-        <option value="Baixa">Baixa</option>
-      </select>
-      {errors.prioridade && <p className="erro">{errors.prioridade.message}</p>}
-
-      <button type="submit">Cadastrar</button>
-    </form>
+      <div className="acoes">
+        <button onClick={editarTarefa}>Editar</button>
+        <button onClick={excluirTarefa}>Excluir</button>
+        <select
+          value={tarefa.status}
+          onChange={(e) => alterarStatus(e.target.value)}
+        >
+          <option value="A fazer">A Fazer</option>
+          <option value="Fazendo">Fazendo</option>
+          <option value="Pronto">Pronto</option>
+        </select>
+      </div>
+    </div>
   );
 }

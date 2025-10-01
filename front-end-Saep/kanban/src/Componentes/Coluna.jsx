@@ -1,8 +1,16 @@
-export function Coluna(){
+import Tarefa from "./Paginas/Tarefa";
+import { useDroppable} from "@dnd-kit/core";
+
+export function Coluna({ id, titulo, tarefas = []}){
+        const { setNodeRef } = useDroppable({ id });
+
     return(
-        <section>
-            <h2>Nome da Coluna</h2>
-            <p>Tarefas</p>
+        <section className="coluna" ref={setNodeRef}>
+            <h2>{titulo}</h2>
+            {tarefas.map(tarefa => {
+                console.log("RENDERIZANDO:", tarefa);
+                return <Tarefa key={tarefa.id} tarefa={tarefa} />;
+            })}
         </section>
-    )
+    );
 }
