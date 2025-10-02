@@ -2,23 +2,8 @@ import { useEffect, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import axios from "axios";
 
-export default function Tarefa({ tarefa }) {
-  const [usuarios, setUsuarios] = useState({}); // mapa id → nome
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/usuario/")
-      .then((res) => {
-        const mapUsuarios = {};
-        res.data.forEach((u) => {
-          mapUsuarios[u.id] = u.nome;
-        });
-        setUsuarios(mapUsuarios);
-      })
-      .catch((err) => console.error("Erro ao carregar usuários", err));
-  }, []);
-
-  // drag and drop
+export default function Tarefa({ tarefa, onAtualizar, onExcluir, usuarios }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: tarefa.id,
   });
@@ -27,38 +12,29 @@ export default function Tarefa({ tarefa }) {
     ? { transform: `translate(${transform.x}px, ${transform.y}px)` }
     : undefined;
 
-  // altera status da tarefa
   const alterarStatus = (novoStatus) => {
     axios
       .patch(`http://localhost:8000/api/tarefa/${tarefa.id}`, { status: novoStatus })
-      .then(() => {
-        tarefa.status = novoStatus;
-      })
+      .then((res) => onAtualizar(res.data))
       .catch((err) => console.error("Erro ao alterar status", err));
   };
 
-  // editar descrição via prompt
   const editarTarefa = () => {
     const novaDescricao = prompt("Editar descrição:", tarefa.descricao);
     if (!novaDescricao) return;
 
     axios
       .patch(`http://localhost:8000/api/tarefa/${tarefa.id}`, { descricao: novaDescricao })
-      .then(() => {
-        tarefa.descricao = novaDescricao;
-      })
+      .then((res) => onAtualizar(res.data))
       .catch((err) => console.error("Erro ao editar tarefa", err));
   };
 
-  // excluir tarefa
-  const excluirTarefa = () => {
+  const handleExcluirTarefa = () => {
     if (!confirm("Deseja realmente excluir esta tarefa?")) return;
 
     axios
       .delete(`http://localhost:8000/api/tarefa/${tarefa.id}`)
-      .then(() => {
-        alert("Tarefa excluída com sucesso");
-      })
+      .then(() => onExcluir(tarefa.id))
       .catch((err) => console.error("Erro ao excluir tarefa", err));
   };
 
@@ -83,16 +59,17 @@ export default function Tarefa({ tarefa }) {
 
       <div className="acoes">
         <button onClick={editarTarefa}>Editar</button>
-        <button onClick={excluirTarefa}>Excluir</button>
+        <button onClick={handleExcluirTarefa}>Excluir</button>
         <select
           value={tarefa.status}
           onChange={(e) => alterarStatus(e.target.value)}
         >
-          <option value="A fazer">A Fazer</option>
-          <option value="Fazendo">Fazendo</option>
-          <option value="Pronto">Pronto</option>
+          <option value="a fazer">A Fazer</option>
+          <option value="fazendo">Fazendo</option>
+          <option value="pronto">Pronto</option>
         </select>
       </div>
     </div>
   );
 }
+
