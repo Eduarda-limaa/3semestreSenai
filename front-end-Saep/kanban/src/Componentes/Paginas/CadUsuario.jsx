@@ -4,51 +4,80 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const schemaCadUsuario= z.object({
+const schemaCadUsuario = z.object({
     nome: z.string()
         .min(5, "Informe um nome válido!")
         .max(60, "Informe no máximo 60 caracteres")
         .regex(/(?=.*[aeiouAEIOU])/, { message: "O nome deve conter ao menos uma vogal" })
         .regex(/^(?!.*(.)\1{3,}).*$/, { message: "Não repita tantas vezes a mesma letra" })
-        .regex(/^([A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?)(\s[A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?){1,5}$/,{ message: "Digite um nome válido: de 2 a 6 palavras, cada uma começando com maiúscula, apenas letras, apóstrofo ou hífen" }),
+        .regex(/^([A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?)(\s[A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?){1,5}$/, { message: "Digite um nome válido: de 2 a 6 palavras, cada uma começando com maiúscula, apenas letras, apóstrofo ou hífen" }),
     email: z.string()
-        .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,{message: "Email inválido"})
+        .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, { message: "Email inválido" })
 });
 
-export function CadUsuario(){
-    const{
+export function CadUsuario() {
+    const {
         register, // registrar para mim o que o usuário inputar
         handleSubmit, // no momento em que ele submeter 
         formState: { errors }, // o formulario, e se ele errar guarda no errors
         reset
-    }=useForm({ resolver : zodResolver(schemaCadUsuario)});
+    } = useForm({ resolver: zodResolver(schemaCadUsuario) });
 
     async function obterDados(data) {
         console.log("Dados recebidos", data);
 
-        try{
+        try {
             await axios.post("http://127.0.0.1:8000/api/usuario/", data);
             alert("Usuário cadastrado com sucesso!");
             reset();
-        }catch(error){
+        } catch (error) {
             alert("Erro ao cadastrar usuário");
             console.error("Deu ruim.", error);
         }
     }
 
 
-    return(
-        <form className="formulario" onSubmit={handleSubmit(obterDados)}>
-            <h1>Cadastro de Usuário</h1>
-            <label>Nome:</label>
-            <input type="text" {...register("nome")}/>
-            {errors.nome && <p>{errors.nome.message}</p>}
+    return (
+        <form
+            className="formulario"
+            onSubmit={handleSubmit(obterDados)}
+            aria-labelledby="titulo-form"
+        >
+            <h1 id="titulo-form">Cadastro de Usuário</h1>
 
-            <label>E-mail:</label>
-            <input type="email" {...register("email")} /> 
-            {errors.email && <p>{errors.email.message}</p>}
+            <div>
+                <label htmlFor="nome">Nome:</label>
+                <input
+                    id="nome"
+                    type="text"
+                    {...register("nome")}
+                    aria-invalid={!!errors.nome}
+                    aria-describedby={errors.nome ? "erro-nome" : undefined}
+                />
+                {errors.nome && (
+                    <p id="erro-nome" role="alert">
+                        {errors.nome.message}
+                    </p>
+                )}
+            </div>
+
+            <div>
+                <label htmlFor="email">E-mail:</label>
+                <input
+                    id="email"
+                    type="email"
+                    {...register("email")}
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? "erro-email" : undefined}
+                />
+                {errors.email && (
+                    <p id="erro-email" role="alert">
+                        {errors.email.message}
+                    </p>
+                )}
+            </div>
 
             <button type="submit">Cadastrar</button>
         </form>
-    )
+    );
 }

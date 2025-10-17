@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
 import axios from "axios";
+import imagemIcone from '../assets/girar.png';
 
 
 export default function Tarefa({ tarefa, onAtualizar, onExcluir, usuarios }) {
@@ -42,8 +43,7 @@ export default function Tarefa({ tarefa, onAtualizar, onExcluir, usuarios }) {
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
+    
       className={`card prioridade-${tarefa.prioridade.toLowerCase()}`}
     >
       <p className="descricao">
@@ -63,11 +63,14 @@ export default function Tarefa({ tarefa, onAtualizar, onExcluir, usuarios }) {
         <select
           value={tarefa.status}
           onChange={(e) => alterarStatus(e.target.value)}
+          aria-label={`Alterar status da tarefa ${tarefa.descricao}`}
         >
           <option value="a fazer">A Fazer</option>
           <option value="fazendo">Fazendo</option>
           <option value="pronto">Pronto</option>
         </select>
+        <img src={imagemIcone} alt="icone de mão para mover o card" className="icone" {...attributes}
+      {...listeners} aria-hidden="true"/>
       </div>
     </div>
   );
