@@ -11,7 +11,8 @@ const schemaCadUsuario = z.object({
         .regex(/(?=.*[aeiouAEIOU])/, { message: "O nome deve conter ao menos uma vogal" })
         .regex(/^(?!.*(.)\1{3,}).*$/, { message: "Não repita tantas vezes a mesma letra" })
         .regex(/^([A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?)(\s[A-ZÀ-Ú][a-zà-ú']+(?:-[A-ZÀ-Ú][a-zà-ú']+)?){1,5}$/, { message: "Digite um nome válido: de 2 a 6 palavras, cada uma começando com maiúscula, apenas letras, apóstrofo ou hífen" }),
-    email: z.string()
+     email: z.string()
+        .min(1, "Email inválido") 
         .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, { message: "Email inválido" })
 });
 
@@ -65,7 +66,7 @@ export function CadUsuario() {
                 <label htmlFor="email">E-mail:</label>
                 <input
                     id="email"
-                    type="email"
+                    type="text"
                     {...register("email")}
                     aria-invalid={!!errors.email}
                     aria-describedby={errors.email ? "erro-email" : undefined}

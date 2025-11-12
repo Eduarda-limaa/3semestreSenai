@@ -6,11 +6,9 @@ import { CadUsuario } from './CadUsuario'
 import '@testing-library/jest-dom'
 
 vi.mock('axios')
-
-// Mock global do alert
 global.alert = vi.fn()
 
-describe('Componente CadUsuario - Testes QA completos', () => {
+describe('Componente CadUsuario', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     axios.post = vi.fn().mockResolvedValue({ data: { success: true } })
@@ -30,8 +28,12 @@ describe('Componente CadUsuario - Testes QA completos', () => {
       const botao = screen.getByRole('button', { name: /cadastrar/i })
       await userEvent.click(botao)
 
-      expect(await screen.findByText(/Informe um nome válido!/i)).toBeInTheDocument()
-      expect(await screen.findByText(/Email inválido/i)).toBeInTheDocument()
+      await waitFor(async () => {
+        const alerts = await screen.findAllByRole('alert')
+        expect(alerts.some(a => a.textContent.includes('Informe um nome válido'))).toBe(true)
+        expect(alerts.some(a => a.textContent.includes('Email inválido'))).toBe(true)
+      })
+
       expect(axios.post).not.toHaveBeenCalled()
     })
 
@@ -41,13 +43,15 @@ describe('Componente CadUsuario - Testes QA completos', () => {
       const emailInput = screen.getByLabelText(/e-mail/i)
       const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-      await userEvent.clear(nomeInput)
       await userEvent.type(nomeInput, 'Ana')
-      await userEvent.clear(emailInput)
       await userEvent.type(emailInput, 'ana@test.com')
       await userEvent.click(botao)
 
-      expect(await screen.findByText(/Informe um nome válido!/i)).toBeInTheDocument()
+      await waitFor(async () => {
+        const alerts = await screen.findAllByRole('alert')
+        expect(alerts.some(a => a.textContent.includes('Informe um nome válido'))).toBe(true)
+      })
+
       expect(axios.post).not.toHaveBeenCalled()
     })
 
@@ -57,13 +61,15 @@ describe('Componente CadUsuario - Testes QA completos', () => {
       const emailInput = screen.getByLabelText(/e-mail/i)
       const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-      await userEvent.clear(nomeInput)
       await userEvent.type(nomeInput, 'Bcdf Ghjk')
-      await userEvent.clear(emailInput)
       await userEvent.type(emailInput, 'teste@test.com')
       await userEvent.click(botao)
 
-      expect(await screen.findByText(/O nome deve conter ao menos uma vogal/i)).toBeInTheDocument()
+      await waitFor(async () => {
+        const alerts = await screen.findAllByRole('alert')
+        expect(alerts.some(a => a.textContent.includes('deve conter ao menos uma vogal'))).toBe(true)
+      })
+
       expect(axios.post).not.toHaveBeenCalled()
     })
 
@@ -73,13 +79,15 @@ describe('Componente CadUsuario - Testes QA completos', () => {
       const emailInput = screen.getByLabelText(/e-mail/i)
       const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-      await userEvent.clear(nomeInput)
       await userEvent.type(nomeInput, 'Maria Silva')
-      await userEvent.clear(emailInput)
       await userEvent.type(emailInput, 'invalid-email')
       await userEvent.click(botao)
 
-      expect(await screen.findByText(/Email inválido/i)).toBeInTheDocument()
+      await waitFor(async () => {
+        const alerts = await screen.findAllByRole('alert')
+        expect(alerts.some(a => a.textContent.includes('Email inválido'))).toBe(true)
+      })
+
       expect(axios.post).not.toHaveBeenCalled()
     })
   })
@@ -90,9 +98,7 @@ describe('Componente CadUsuario - Testes QA completos', () => {
     const emailInput = screen.getByLabelText(/e-mail/i)
     const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-    await userEvent.clear(nomeInput)
     await userEvent.type(nomeInput, 'Maria Eduarda Silva')
-    await userEvent.clear(emailInput)
     await userEvent.type(emailInput, 'maria@test.com')
     await userEvent.click(botao)
 
@@ -115,9 +121,7 @@ describe('Componente CadUsuario - Testes QA completos', () => {
     const emailInput = screen.getByLabelText(/e-mail/i)
     const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-    await userEvent.clear(nomeInput)
     await userEvent.type(nomeInput, 'Maria Eduarda Silva')
-    await userEvent.clear(emailInput)
     await userEvent.type(emailInput, 'maria@test.com')
     await userEvent.click(botao)
 
@@ -133,21 +137,23 @@ describe('Componente CadUsuario - Testes QA completos', () => {
     const emailInput = screen.getByLabelText(/e-mail/i)
     const botao = screen.getByRole('button', { name: /cadastrar/i })
 
-    // Dispara erro inicial
+    // gera o erro inicial
     await userEvent.click(botao)
-    expect(await screen.findByText(/Informe um nome válido!/i)).toBeInTheDocument()
-    expect(await screen.findByText(/Email inválido/i)).toBeInTheDocument()
+    await waitFor(async () => {
+      const alerts = await screen.findAllByRole('alert')
+      expect(alerts.some(a => a.textContent.includes('Informe um nome válido'))).toBe(true)
+      expect(alerts.some(a => a.textContent.includes('Email inválido'))).toBe(true)
+    })
 
-    // Corrige inputs
+  
     await userEvent.clear(nomeInput)
     await userEvent.type(nomeInput, 'Maria Eduarda Silva')
     await userEvent.clear(emailInput)
     await userEvent.type(emailInput, 'maria@test.com')
 
-    // Espera que erros desapareçam
     await waitFor(() => {
-      expect(screen.queryByText(/Informe um nome válido!/i)).not.toBeInTheDocument()
-      expect(screen.queryByText(/Email inválido/i)).not.toBeInTheDocument()
+      const alertsAfter = screen.queryAllByRole('alert')
+      expect(alertsAfter.length).toBe(0)
     })
   })
 })

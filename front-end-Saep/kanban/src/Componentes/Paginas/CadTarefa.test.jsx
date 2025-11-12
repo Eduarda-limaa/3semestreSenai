@@ -7,7 +7,7 @@ import '@testing-library/jest-dom'
 
 vi.mock('axios')
 
-describe('Componente CadTarefa - Interações de QA', () => {
+describe('Componente CadTarefa', () => {
   beforeEach(() => {
     axios.get.mockResolvedValue({ data: [{ id: 1, nome: 'Maria' }] })
     axios.post = vi.fn().mockResolvedValue({ data: { success: true } })
@@ -41,19 +41,19 @@ describe('Componente CadTarefa - Interações de QA', () => {
     const prioridadeSelect = screen.getByLabelText(/prioridade/i)
     const botaoCadastrar = screen.getByRole('button', { name: /cadastrar/i })
 
-    // Espera o usuário aparecer no select
+    // espera o usuário aparecer no select
     await screen.findByRole('option', { name: /maria/i })
 
-    // Preenche com dados válidos
+    // preenche o formulario com dados válidos
     await userEvent.type(descricaoInput, 'Nova tarefa com pelo menos 20 caracteres')
     await userEvent.type(setorInput, 'MAA')
     await userEvent.selectOptions(usuarioSelect, '1')
     await userEvent.selectOptions(prioridadeSelect, 'Alta')
 
-    // Clica no botão cadastrar
+    
     await userEvent.click(botaoCadastrar)
 
-    // Verifica se axios.post foi chamado corretamente
+    // visualiza se axios.post foi chamado corretamente
     await waitFor(() => {
       expect(axios.post).toHaveBeenCalledWith(
         'http://127.0.0.1:8000/api/tarefa/',
