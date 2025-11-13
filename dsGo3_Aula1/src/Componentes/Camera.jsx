@@ -1,7 +1,7 @@
 // Ref: é hook que permite que eu interaja com os perifericos do usuario
 import { useState, useEffect, useRef } from "react";
 
-export function Camera(){
+export function Camera({onFotoTirada}){
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [foto, setFoto] = useState(null);
