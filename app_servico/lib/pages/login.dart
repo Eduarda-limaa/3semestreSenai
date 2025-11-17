@@ -125,7 +125,7 @@ Widget build(BuildContext context) {
                   ),
                 ),
                 child: const Text(
-                  "Login",
+                  "Entrar",
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),

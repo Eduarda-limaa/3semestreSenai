@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "823013364590",
+    "project_id": "appservico-fc5d5",
+    "storage_bucket": "appservico-fc5d5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823013364590:android:a4ff161122d42728e9e77f",
+        "android_client_info": {
+          "package_name": "com.appservico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsNeQIgwWGfYvQ7RbQGXKNwThPMartPvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823013364590:android:c1680d190b29e8dfe9e77f",
+        "android_client_info": {
+          "package_name": "com.appservico.app_servico"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsNeQIgwWGfYvQ7RbQGXKNwThPMartPvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
