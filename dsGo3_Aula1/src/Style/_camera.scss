@@ -11,7 +11,10 @@
   color: $claro;
   box-shadow: 0 0 25px rgba(247, 27, 228, 0.4);
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+  
  
   h2 {
     font-size: 1.6rem;
@@ -29,6 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    di
  
     video,
     img {

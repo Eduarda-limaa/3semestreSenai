@@ -3,32 +3,32 @@ export const missoes = [
     id: 1,
     titulo: "Conhecimentos Gerais",
     missao: "Advinha quem eu sou",    
-    descricao: "Pessoal, hoje vai ter prova",    
-    respostaCorreta: "Dorival",
+    descricao: "Tudo bem amar os dois, eu amei..",    
+    respostaCorreta: "Katherine",
     status: 'disponivel' 
   },
   {
     id: 2,
     titulo: "Conhecimentos Gerais",
     missao: "Advinha quem eu sou",   
-    descricao: "A bola é minha! Essa frase é conhecida por qual professor(a)?",
-    respostaCorreta: "Marcia",
+    descricao: "'Ele não se chateia. Ele se vinga.'  De quem o Stefan está falando?",
+    respostaCorreta: "Damon",
     status: 'disponivel'
   },
   {
     id: 3,
     titulo: "Conhecimentos Gerais",
     missao: "Advinha quem eu sou",   
-    descricao: "O que é um projeto? Qual é o professor que relembra esse conceito todas vezes possíveis?",
-    respostaCorreta: "Fernanda",
+    descricao: "Sempre e para Sempre. Que familía sempre fala essa frase?",
+    respostaCorreta: "Mikaelson",
     status: 'disponivel'
   },
   {
     id: 4,
     titulo: "Conhecimentos Gerais",
     missao: "Advinha quem eu sou",   
-    descricao: "Tá valendo uma caixa de bombom, é a frase favorita de qual professor?",
-    respostaCorreta: "Vinícios",
+    descricao: "Ele foi seu primeiro amor. E eu pretendo ser o último. leve o tempo que for. Quem falou isso?",
+    respostaCorreta: "Klaus",
     status: 'disponivel'
   },
   {

@@ -5,7 +5,8 @@ import { DSGo } from "../Paginas/DSGo";
 import { Missao} from "../Paginas/Missao";
 import { Inventario } from "../Paginas/Inventario";
 // import { Menu } from "../Componentes/Menu";
-import { Camera } from "../Componentes/Camera";
+// import { Camera } from "../Componentes/Camera";
+import { Galeria } from "../Componentes/GaleriaFotos";
 
 export function Rotas() {
     return (
@@ -15,7 +16,7 @@ export function Rotas() {
                 <Route index element ={<DSGo/>}/>
                 <Route path="missao" element={<Missao />} /> 
                  <Route path="inventario" element={<Inventario/>} />
-                <Route path="camera" element={<Camera/>} />
+                <Route path="galeria" element={<Galeria/>} />
             </Route>   
         </Routes>
     );

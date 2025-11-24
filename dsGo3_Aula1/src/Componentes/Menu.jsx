@@ -3,6 +3,7 @@ import mapa from '../assets/mapa_tratado.png';
 import bau from '../assets/bau_tratado.png';
 import camera from '../assets/camera_tratado.png';
 import { Link } from 'react-router-dom'
+import { Galeria } from './GaleriaFotos';
 export function Menu() {
     return (
         <div className='menu'>
@@ -36,9 +37,9 @@ export function Menu() {
               
             
                     <li>    
-                    <Link to ='camera'>
+                    <Link to ='galeria'>
                         <figure>
-                            <img src={camera} alt="camera" />
+                            <img src={camera} alt="galeria" />
                             <figcaption>Camera</figcaption>
                         </figure>
                     </Link>

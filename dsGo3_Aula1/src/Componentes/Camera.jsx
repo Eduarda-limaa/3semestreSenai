@@ -31,10 +31,12 @@ export function Camera({onFotoTirada}){
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
-        ctx.drawImage(video, 0,0,canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         const imagem = canvas.toDataURL("image/png");
         setFoto(imagem)
+
+
 
     if(onFotoTirada){
         onFotoTirada(imagem)// permite a comunicação com as props
