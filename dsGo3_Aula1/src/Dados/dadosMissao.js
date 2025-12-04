@@ -35,25 +35,25 @@ export const missoes = [
     id: 5,
     titulo: "Conhecimentos Gerais",
     missao: "Advinha quem eu sou",   
-    descricao: "E agora com vocês .... os patronos do conhecimento... Vocês",
-    respostaCorreta: "Israel",
+    descricao: "Hello Brother! Quem é responsável por essa frase?",
+    respostaCorreta: "Damon",
     status: 'disponivel'
   }
   ,
   {
     id: 6,
     titulo: "Conhecimentos Gerais",
-    missao: "Advinha quem eu sou",   
-    descricao: "Mais tá fácil, vocês fazem isso rapidinho",
-    respostaCorreta: "Dorivis",
+    missao: "O que eu sou?",   
+    descricao: "Loira, antiga, debochada e carinhosa",
+    respostaCorreta: "Rebeka",
     status: 'disponivel'
   },
   {
     id: 7,
     titulo: "Conhecimentos Gerais",
     missao: "O que eu sou?",   
-    descricao: "Toda tabela tem?",
-    respostaCorreta: "Chave Primaria",
+    descricao: "Elegante, antigo e leal",
+    respostaCorreta: "Elijah",
     status: 'disponivel'
   }
   ,
@@ -61,8 +61,17 @@ export const missoes = [
     id: 8,
     titulo: "Conhecimentos Gerais",
     missao: "O que eu sou?",   
-    descricao: "Um codigo de excelecia tem .... code",
-    respostaCorreta: "Clean",
+    descricao: "Forte, corajosa e poderosa",
+    respostaCorreta: "Bonnie",
+    status: 'disponivel'
+  }
+  ,
+  {
+    id: 9,
+    titulo: "Conhecimentos Gerais",
+    missao: "Advinha quem eu sou",   
+    descricao: "Qualquer pessoa capaz de amar é capaz de ser salva.",
+    respostaCorreta: "Caroline",
     status: 'disponivel'
   }
 ];

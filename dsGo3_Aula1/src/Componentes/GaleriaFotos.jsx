@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Camera } from "./Camera";
+import toast, { Toaster } from "react-hot-toast";
 
 export function Galeria() {
     const [fotos, setFotos] = useState(() => {
@@ -8,14 +9,22 @@ export function Galeria() {
     });
 
     const adicionarFoto = (novaFoto) => {
-        console.log("Foto recebida pela galeria:", novaFoto);
-
         if (!novaFoto) return;
 
-        const novas = [...fotos, novaFoto];
-        setFotos(novas);
-        localStorage.setItem("fotos", JSON.stringify(novas));
+        setFotos((prevFotos) => {
+            const atualizadas = [...prevFotos, novaFoto];
+
+            if (atualizadas.length % 3 === 0) {
+                toast.success(`Você já tirou ${atualizadas.length} fotos!`);
+            }
+
+            // salva no localStorage
+            localStorage.setItem("fotos", JSON.stringify(atualizadas));
+
+            return atualizadas;
+        });
     };
+
 
     const limparGaleria = () => {
         if (!confirm("Deseja limpar sua galeria?")) return;
@@ -25,6 +34,7 @@ export function Galeria() {
 
     return (
         <main className="galeria-container">
+            <Toaster position="top-right" />
             <h2 className="galeria-titulo">Sua Galeria</h2>
 
             <Camera onFotoTirada={adicionarFoto} />
