@@ -44,7 +44,6 @@ Widget build(BuildContext context) {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Ícone circular maior
               Container(
                 width: 210,
                 height: 210,
@@ -62,13 +61,12 @@ Widget build(BuildContext context) {
                 child: const Icon(
                   Icons.person,
                   size: 70,
-                  color: Colors.blue,
+                  color: Color(0xFF6A4DBA),
                 ),
               ),
 
               const SizedBox(height: 40),
 
-              // Campo usuário
               SizedBox(
                 width: 350,
                 child: TextField(
@@ -90,7 +88,6 @@ Widget build(BuildContext context) {
 
               const SizedBox(height: 15),
 
-              // Campo senha
               SizedBox(
                 width: 350,
                 child: TextField(
@@ -113,11 +110,10 @@ Widget build(BuildContext context) {
 
               const SizedBox(height: 25),
 
-              // Botão de login
               ElevatedButton(
                 onPressed: login,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Color(0xFF6A4DBA),
                   padding: const EdgeInsets.symmetric(
                       horizontal: 50, vertical: 12),
                   shape: RoundedRectangleBorder(
@@ -132,7 +128,6 @@ Widget build(BuildContext context) {
 
               const SizedBox(height: 20),
 
-              // Mensagem de feedback
               Text(
                 "$message",
                 style: TextStyle(

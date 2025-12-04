@@ -1,4 +1,6 @@
+import 'package:app_servico/pages/profissionais.dart';
 import 'package:flutter/material.dart';
+import 'servico.dart'; 
 
 class TelaHome extends StatelessWidget {
   const TelaHome({super.key});
@@ -10,6 +12,7 @@ class TelaHome extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDFDFD),
+
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -27,8 +30,7 @@ class TelaHome extends StatelessWidget {
               "Realce sua beleza",
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: 15,
-              ),
+                fontSize: 15),
             ),
           ],
         ),
@@ -48,7 +50,6 @@ class TelaHome extends StatelessWidget {
         ],
       ),
 
-      // ================= BODY ==================
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -57,11 +58,6 @@ class TelaHome extends StatelessWidget {
             _buildBannerSuperior(isTablet),
             const SizedBox(height: 25),
 
-            // 🔥 HERO DE AGENDAMENTO
-            _buildHeroAgendamento(isTablet),
-            const SizedBox(height: 25),
-
-            // 🔥 GRID DE CARDS
             GridView.count(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -70,18 +66,57 @@ class TelaHome extends StatelessWidget {
               mainAxisSpacing: 20,
               childAspectRatio: isTablet ? 1.2 : 1,
               children: [
-                _buildStyledCard(Icons.calendar_month, "Agendar horário"),
-                _buildStyledCard(Icons.access_time_filled, "Meus agendamentos"),
-                _buildStyledCard(Icons.content_cut, "Nossos serviços"),
-                _buildStyledCard(Icons.person, "Profissionais"),
-                _buildStyledCard(Icons.favorite, "Favoritos"),
+                _buildStyledCard(
+                  Icons.calendar_month,
+                  "Agendar horário",
+                  onPressed: () {
+                    print("Abrir tela de Agendar Horário");
+                  },
+                ),
+
+                _buildStyledCard(
+                  Icons.access_time_filled,
+                  "Meus agendamentos",
+                  onPressed: () {
+                    print("Abrir tela Meus Agendamentos");
+                  },
+                ),
+
+                _buildStyledCard(
+                  Icons.content_cut,
+                  "Nossos serviços",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TelaServicos(),
+                      ),
+                    );
+                  },
+                ),
+
+                _buildStyledCard(
+                  Icons.person,
+                  "Profissionais",
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TelaProfissionais(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
+
+            const SizedBox(height: 25),
+
+            _buildHeroAgendamento(isTablet),
           ],
         ),
       ),
 
-      // ================= BOTTOM NAV ==================
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: const Color(0xFF6A4DBA),
         unselectedItemColor: Colors.grey,
@@ -97,9 +132,7 @@ class TelaHome extends StatelessWidget {
     );
   }
 
-  // =============================================================
-  // BANNER SUPERIOR
-  // =============================================================
+
   Widget _buildBannerSuperior(bool isTablet) {
     return Container(
       height: isTablet ? 340 : 260,
@@ -115,8 +148,8 @@ class TelaHome extends StatelessWidget {
           borderRadius: BorderRadius.circular(25),
           gradient: LinearGradient(
             colors: [
-              Color.fromARGB(255, 142, 77, 196).withOpacity(0.15),
-              const Color.fromARGB(255, 142, 77, 196).withOpacity(0.4),
+              const Color(0xFF8E4DC4).withOpacity(0.15),
+              const Color(0xFF8E4DC4).withOpacity(0.4),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -126,9 +159,7 @@ class TelaHome extends StatelessWidget {
     );
   }
 
-  // =============================================================
-  // HERO DO AGENDAMENTO
-  // =============================================================
+
   Widget _buildHeroAgendamento(bool isTablet) {
     return Container(
       padding: EdgeInsets.all(isTablet ? 35 : 25),
@@ -162,7 +193,9 @@ class TelaHome extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              print("Abrir tela de Agendar");
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFB18CFF),
               padding: EdgeInsets.symmetric(
@@ -180,51 +213,52 @@ class TelaHome extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  // =============================================================
-  // CARD ESTILIZADO
-  // =============================================================
-  Widget _buildStyledCard(IconData icon, String text) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFFF8F3FF),
-            Color(0xFFEDE4FF),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 4),
+  Widget _buildStyledCard(IconData icon, String text, {VoidCallback? onPressed}) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(25),
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+          gradient: const LinearGradient(
+            colors: [
+              Color(0xFFF8F3FF),
+              Color(0xFFEDE4FF),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 50, color: Color(0xFF6A4DBA)),
-            const SizedBox(height: 15),
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
-              ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 10,
+              offset: Offset(0, 4),
             ),
           ],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 50, color: Color(0xFF6A4DBA)),
+              const SizedBox(height: 15),
+              Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF333333),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

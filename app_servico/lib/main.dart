@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App de Serviços',
-      home: LoginPage(), // Tela login
+      home: LoginPage(), 
       routes: {
         '/home': (context) => const TelaHome(),
       },
